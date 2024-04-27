@@ -32,5 +32,13 @@ class Patient(db.Model):
     age = db.Column(db.Integer, nullable=False)
     gender = db.Column(db.String(10), nullable=False)
     contact_information = db.Column(db.String(100), nullable=False)
-    medical_history = db.Column(db.String(100), nullable=False)
-    allergies = db.Column(db.String(100), nullable=False)
+    medical_history = db.Column(db.Text, nullable=False)
+    allergies = db.Column(db.Text, nullable=False)
+
+
+class Appointment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.DateTime, nullable=False)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'), nullable=False)
+
