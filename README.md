@@ -110,7 +110,7 @@ curl --location --request PUT 'http://127.0.0.1:5000/update_appointment/1' \
     "doctor_id":1
 }'
 
-# Appointment Records of patients
+# Appointment history and Medical History of patients
 curl --location --request GET 'http://127.0.0.1:5000/patient_history/1'
 
 # List of Patients Assigned to doctors
