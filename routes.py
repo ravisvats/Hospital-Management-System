@@ -236,3 +236,93 @@ def create_appointment():
             return jsonify({'error': 'Doctor is not available at the specified time'}), 400
     else:
         return jsonify({'error': 'Doctor not found or does not work on the specified day'}), 404
+
+
+@new_routes.route('/appointments', methods=['GET'])
+def get_appointments():
+    appointments = Appointment.query.all()
+
+    appointment_list = []
+    for appointment in appointments:
+        appointment_list.append({
+            'id': appointment.id,
+            'date': appointment.date,
+            'patient_id': appointment.patient_id,
+            'doctor_id': appointment.doctor_id
+        })
+
+    return jsonify({'appointments': appointment_list})
+
+
+@new_routes.route('/update_appointment/<int:appointment_id>', methods=['PUT'])
+def update_appointment(appointment_id):
+    appointment = Appointment.query.get(appointment_id)
+    if not appointment:
+        return jsonify({'error': 'Appointment not found'}), 404
+
+    data = request.json
+    if 'date' in data:
+        appointment.date = data['date']
+    if 'patient_id' in data:
+        appointment.patient_id = data['patient_id']
+    if 'doctor_id' in data:
+        appointment.doctor_id = data['doctor_id']
+
+    db.session.commit()
+
+    return jsonify({'message': 'Appointment updated successfully'}), 200
+
+
+@new_routes.route('/patient_history/<int:patient_id>', methods=['GET'])
+def get_patient_history(patient_id):
+    patient = Patient.query.get(patient_id)
+    if not patient:
+        return jsonify({'error': 'Patient not found'}), 404
+
+    appointments = Appointment.query.filter_by(patient_id=patient_id).all()
+
+    history = {
+        'patient_name': patient.name,
+        'medical_history': patient.medical_history,
+        'allergies': patient.allergies,
+        'appointments': []
+    }
+
+    for appointment in appointments:
+        doctor = Doctor.query.get(appointment.doctor_id)
+        if doctor:
+            department = Department.query.get(doctor.department_id)
+            appointment_data = {
+                'date': appointment.date,
+                'doctor_name': doctor.name,
+                'doctor_specialization': doctor.specialization,
+                'department_name': department.name if department else None,
+                'department_services_offered': department.services_offered if department else None
+            }
+            history['appointments'].append(appointment_data)
+
+    return jsonify(history)
+
+
+@new_routes.route('/doctor_patients/<int:doctor_id>', methods=['GET'])
+def get_doctor_patients(doctor_id):
+    doctor = Doctor.query.get(doctor_id)
+    if not doctor:
+        return jsonify({'error': 'Doctor not found'}), 404
+
+    patients = Patient.query.join(Appointment).filter(Appointment.doctor_id == doctor_id).all()
+
+    doctor_patients = []
+    for patient in patients:
+        doctor_patients.append({
+            'id': patient.id,
+            'name': patient.name,
+            'age': patient.age,
+            'gender': patient.gender,
+            'contact_information': patient.contact_information,
+            'medical_history': patient.medical_history,
+            'allergies': patient.allergies
+        })
+
+    return jsonify({'doctor_patients': doctor_patients})
+
