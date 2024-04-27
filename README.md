@@ -1,7 +1,7 @@
 # Hospital-Management-System
 Develop a RESTful API for a Hospital Management System using a suitable backend framework (Flask or Django) that allows users to manage patients, doctors, and departments efficiently.
 
-# install project
+# Install project
 git clone https://github.com/ravisvats/Hospital-Management-System.git
 Create a virtual environment: virtualenv virt<br />
 activate virtual environment: source virt/bin/activate<br />
@@ -10,6 +10,7 @@ run flask app by: python app.py<br />
 
 # Databases
 now we have to create a database inside our mysql:<br />
+sudo mysql <br />
 create user: CREATE USER 'ravi'@'localhost' IDENTIFIED BY 'Ravi123!';<br />
 create database hospital;<br />
 GRANT ALL PRIVILEGES ON hospital.* TO 'ravi'@'localhost'; # user your user from local system or you can create user <br />
