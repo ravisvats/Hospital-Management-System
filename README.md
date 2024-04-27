@@ -3,18 +3,18 @@ Develop a RESTful API for a Hospital Management System using a suitable backend 
 
 # install project
 git clone https://github.com/ravisvats/Hospital-Management-System.git
-Create a virtual environment: virtualenv virt
-activate virtual environment: source virt/bin/activate
-install all packages: pip3 install requirements.text
-run flask app by: python app.py
+Create a virtual environment: virtualenv virt<br />
+activate virtual environment: source virt/bin/activate<br />
+install all packages: pip3 install requirements.text<br />
+run flask app by: python app.py<br />
 
 # Databases
-now we have to create a database inside our mysql:
-create user: CREATE USER 'ravi'@'localhost' IDENTIFIED BY 'Ravi123!';
-create database hospital;
-GRANT ALL PRIVILEGES ON hospital.* TO 'ravi'@'localhost'; # user your user from local system or you can create user 
-use hospital;
-CREATE TABLE department (     id INT AUTO_INCREMENT PRIMARY KEY,     name VARCHAR(100) NOT NULL,     services_offered TEXT );
+now we have to create a database inside our mysql:<br />
+create user: CREATE USER 'ravi'@'localhost' IDENTIFIED BY 'Ravi123!';<br />
+create database hospital;<br />
+GRANT ALL PRIVILEGES ON hospital.* TO 'ravi'@'localhost'; # user your user from local system or you can create user <br />
+use hospital;<br />
+CREATE TABLE department (     id INT AUTO_INCREMENT PRIMARY KEY,     name VARCHAR(100) NOT NULL,     services_offered TEXT );<br />
 CREATE TABLE doctor (
     ->     id INT AUTO_INCREMENT PRIMARY KEY,
     ->     name VARCHAR(100) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE doctor (
     ->     start_time TIME NOT NULL,
     ->     end_time TIME NOT NULL,
     ->     FOREIGN KEY (department_id) REFERENCES department(id)
-    -> );
+    -> );<br />
  CREATE TABLE patient (
     ->     id INT AUTO_INCREMENT PRIMARY KEY,
     ->     name VARCHAR(100) NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE doctor (
     ->     contact_information VARCHAR(100) NOT NULL,
     ->     medical_history TEXT NOT NULL,
     ->     allergies TEXT NOT NULL
-    -> );
+    -> );<br />
 CREATE TABLE appointment (
     ->     id INT AUTO_INCREMENT PRIMARY KEY,
     ->     date DATETIME NOT NULL,
@@ -42,11 +42,11 @@ CREATE TABLE appointment (
     ->     doctor_id INT NOT NULL,
     ->     FOREIGN KEY (patient_id) REFERENCES patient(id),
     ->     FOREIGN KEY (doctor_id) REFERENCES doctor(id)
-    -> );
+    -> );<br />
 
-# postman api's curl
+# Postman api's curl
 
-# first create department of hospital
+# First create department of hospital
 curl --location --request POST 'http://127.0.0.1:5000/departments' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -54,10 +54,10 @@ curl --location --request POST 'http://127.0.0.1:5000/departments' \
     "services_offered":"bones"
 }'
 
-# get all departments list filter search by per page, name and services_offered
+# Get all departments list filter search by per page, name and services_offered
 curl --location --request GET 'http://127.0.0.1:5000/departments?per_page=10&name=ortho&services_offered=women'
 
-# create doctor on the portal
+# Create doctor on the portal
 curl --location --request POST 'http://127.0.0.1:5000/doctors' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -69,11 +69,11 @@ curl --location --request POST 'http://127.0.0.1:5000/doctors' \
   "start_time": "08:00:00",
   "end_time": "17:00:00"
 }
-# get all doctors filter and search by name, specialization and availability
+# Get all doctors filter and search by name, specialization and availability
 '
 curl --location --request GET 'http://127.0.0.1:5000/doctors?per_page=2&name=kab&specialization=gyn&department_id=1&day_of_week=2'
 
-# register patient
+# Register patient
 curl --location --request POST 'http://127.0.0.1:5000/patients' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -85,10 +85,10 @@ curl --location --request POST 'http://127.0.0.1:5000/patients' \
     "allergies": "honey"
 }'
 
-# get all patients filter by name
+# Get all patients filter by name
 curl --location --request GET 'http://127.0.0.1:5000/patients?name=suraj'
 
-# create appointment of patient with doctor
+# Create appointment of patient with doctor
 curl --location --request POST 'http://127.0.0.1:5000/create_appointment' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -98,7 +98,7 @@ curl --location --request POST 'http://127.0.0.1:5000/create_appointment' \
     "time": "09:00"
 }'
 
-# get all appointments list
+# Get all appointments list
 curl --location --request GET 'http://127.0.0.1:5000/appointments'
 
 # Assign and Re-assign Patients to Doctors
